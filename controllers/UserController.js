@@ -1,4 +1,4 @@
-const { User,Order } = require("./index")//importar modelo
+const { User,Order } = require("../models/index")//importar modelo
 const UserController = {
     async create(req,res){
         try {
