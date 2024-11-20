@@ -47,5 +47,18 @@ const UserController = {
           res.status(500).send({ message: "There was a problem", error });
         }
       },
+      async update(req, res) {
+        try {
+          await User.update(req.body, {
+            where: {
+              id: req.params.id,
+            },
+          });
+          res.send({ message: "User successfully updated" });
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "There was a problem", error });
+        }
+      },
 };
 module.exports = UserController;
