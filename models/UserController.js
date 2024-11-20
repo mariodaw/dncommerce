@@ -1,0 +1,30 @@
+const { User,Order } = require("./index")//importar modelo
+const UserController = {
+    async create(req,res){
+        try {
+            // console.log(req.body)
+            const user = await User.create(req.body)
+        res.status(201).send({message:"Usuario creado",user})
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({message:"Ha habido un error",error})
+        }
+    },
+    async getAll(req,res){
+        try {
+            const users = await User.findAll({
+                // include:[Order]
+                include:{
+                    model:Order,
+                    attributes:["firstName","lastname","email","birth"]
+                }
+    
+            })
+            res.status(200).send(users)
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({message:"Ha habido un error",error})
+        }
+      }
+};
+module.exports = UserController;
