@@ -13,9 +13,9 @@ const OrderController = {
     try {
         const order = await Order.findAll({
             // include:[User]
-            include:{
+            include:{   
                 model:User,
-                attributes:["date","userId"]
+                attributes:["firstName","lastname","email","birth"]
             }
         })
         res.status(200).send(order)

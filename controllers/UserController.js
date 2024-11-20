@@ -1,4 +1,5 @@
 const { User,Order } = require("../models/index")//importar modelo
+
 const UserController = {
     async create(req,res){
         try {
@@ -16,7 +17,7 @@ const UserController = {
                 // include:[Order]
                 include:{
                     model:Order,
-                    attributes:["firstName","lastname","email","birth"]
+                    attributes:["date","userId"]
                 }
     
             })
