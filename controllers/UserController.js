@@ -1,5 +1,11 @@
-const { User,Order } = require("../models/index")//importar modelo
+const { User,Order, Token, Sequelize } = require("../models/index")//importar modelo
 const bcrypt = require("bcryptjs");
+
+const jwt = require('jsonwebtoken');
+const  {jwt_secret}  = require('../config/config.json')['development']
+const { Op} = Sequelize;
+
+
 const UserController = {
     async create(req, res) {
         try {
@@ -12,6 +18,26 @@ const UserController = {
           res.status(500).send({ message: "There was a problem", error });
         }
       },
+      login(req,res){
+        User.findOne({
+            where:{
+                email:req.body.email
+            }
+        }).then(user=>{
+          if(!user){
+              return res.status(400).send({message:"Usuario o contraseña incorrectos"})
+          }
+          const isMatch = bcrypt.compareSync(req.body.password, user.password);
+          if(!isMatch){
+              return res.status(400).send({message:"Usuario o contraseña incorrectos"})
+          }
+          let token = jwt.sign({ id: user.id }, jwt_secret);
+     Token.create({ token, UserId: user.id });
+          res.send({ message: 'Bienvenid@' + user.name, user, token });
+      })
+
+    },
+
       async getAll(req, res) {
         try {
           const users = await User.findAll({
@@ -60,5 +86,23 @@ const UserController = {
           res.status(500).send({ message: "There was a problem", error });
         }
       },
+      async logout(req, res) {
+        try {
+            await Token.destroy({
+                where: {
+                    [Op.and]: [
+                        { UserId: req.user.id },
+                        { token: req.headers.authorization }
+                    ]
+                }
+            });
+            res.send({ message: 'Desconectado con éxito' })
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({ message: 'hubo un problema al tratar de desconectarte' })
+        }
+    }
+
 };
+
 module.exports = UserController;
