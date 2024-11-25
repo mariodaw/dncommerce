@@ -101,8 +101,35 @@ const UserController = {
             console.log(error)
             res.status(500).send({ message: 'hubo un problema al tratar de desconectarte' })
         }
+    },
+    async getById(req, res) {
+      try {
+        const user = await User.findByPk(req.params.id,{
+          include:[Order]
+        });
+        res.send(user);
+      } catch (error) {
+          console.error(error);
+          res.status(500).send({message:"Ha habido un error",error})
+        console.error(error);
+        res.status(500).send({ message: "Ha habido un error", error });
+      }
+    },
+    async getByFirstName(req,res){
+      try {
+        const users = await User.findAll({
+          where:{
+            firstName:{
+              [Op.like]:`%${req.params.firstName}%`
+            }
+          }
+        })
+        res.send(users)
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "Ha habido un error", error });
+      }
     }
-
 };
 
 module.exports = UserController;
