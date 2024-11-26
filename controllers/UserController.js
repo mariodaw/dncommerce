@@ -1,13 +1,14 @@
-const { User,Order, Token, Sequelize } = require("../models/index")//importar modelo
+const { User,Order, Token, Sequelize, Product } = require("../models/index")//importar modelo
 const bcrypt = require("bcryptjs");
 
 const jwt = require('jsonwebtoken');
+const product = require("../models/product");
 const  {jwt_secret}  = require('../config/config.json')['development']
 const { Op} = Sequelize;
 
 
 const UserController = {
-    async create(req, res) {
+    async create(req, res, next) {
         try {
           // console.log(req.body)
           req.body.password = await bcrypt.hash(req.body.password, 10);
@@ -15,7 +16,7 @@ const UserController = {
           res.status(201).send({ message: "Usuario creado", user });
         } catch (error) {
           console.error(error);
-          res.status(500).send({ message: "There was a problem", error });
+          next(error)
         }
       },
       login(req,res){
@@ -129,6 +130,22 @@ const UserController = {
         console.error(error);
         res.status(500).send({ message: "Ha habido un error", error });
       }
+    },
+    async getInfo (req, res){
+      try {
+        const user = await User.findByPk(req.user.id,{
+          include: [{
+            model: Order,
+            include:[{model:Product}]
+          }]
+        }
+        )
+        res.send({message: 'here you have the info', user})
+      } catch (error){
+          console.log(error)
+          res.status(500).send({message: 'there was a problem'})
+        }
+       
     }
 };
 

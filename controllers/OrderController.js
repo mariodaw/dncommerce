@@ -3,6 +3,7 @@ const OrderController = {
   async create(req, res) {
     try {
       const order = await Order.create(req.body);
+      order.addProduct(req.body.ProductId)
       res.status(201).send({ message: "Publicación creada", order });
     } catch (error) {
         console.error(error);

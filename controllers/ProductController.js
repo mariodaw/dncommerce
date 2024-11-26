@@ -6,14 +6,15 @@ const  {jwt_secret}  = require('../config/config.json')['development']
 const { Op} = Sequelize;
 
 const ProductController = {
-    async create(req, res) {
+    async create(req, res, next) {
         try {
           // console.log(req.body)
           const product = await Product.create(req.body);
+          product.addOrder(req.body.OrderId)
           res.status(201).send({ message: "Producto creado", product });
         } catch (error) {
           console.error(error);
-          res.status(500).send({ message: "There was a problem", error });
+          next(error)
         }
       },
       

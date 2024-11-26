@@ -11,5 +11,5 @@ router.post('/login',UserController.login)
 router.delete('/logout',authentication,UserController.logout)
 router.get("/id/:id",UserController.getById)
 router.get("/firstName/:firstName",UserController.getByFirstName)
-
+router.get("/getInfo", authentication, UserController.getInfo)
 module.exports = router
