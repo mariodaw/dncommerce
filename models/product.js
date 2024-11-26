@@ -13,8 +13,10 @@ module.exports = (sequelize, DataTypes) => {
 
 
       Product.belongsToMany(models.Order,{
-        through:models.orderproduct,
+        through:models.OrderProduct,
       })
+      
+
     }
   }
   Product.init({
