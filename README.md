@@ -7,8 +7,6 @@ Este proyecto es el backend de un ecommerce siendo una sucesion de endpoints que
 
 
 
-
-
 Primero se crea una replica y se accede a ella
 
 ```bash
@@ -37,12 +35,28 @@ Y se iniciaria
   npm start
 ```
 
+## Estrcutura del programa
+
+Mi programa organiza eficientemente las relaciones entre usuarios, pedidos, productos y categorías para mantener un sistema estructurado y funcional.
+
+Usuarios y pedidos ("Uno a muchos")
+Cada usuario puede realizar múltiples pedidos, lo que permite rastrear su historial de compras y personalizar su experiencia.
+
+Usuario y Token ("Uno a muchos")
+Cada usuario puede tener muchos token, lo que permite recabar toda la contraseña de manera segura.
+
+Pedidos y productos ("Muchos a muchos")
+Un pedido puede incluir varios productos, y un producto puede estar en múltiples pedidos. Esto se gestiona mediante una tabla intermedia que registra cantidades específicas por pedido, facilitando el control de inventarios y cálculos totales.
+
+Productos y categorías ("Muchos a uno")
+Cada producto pertenece a una única categoría, mientras que una categoría puede contener varios productos. Esto organiza el catálogo y permite filtros eficientes.
 
 ## Hecho con =
 
 * [Sequelize](https://sequelize.org/) - El framework web usado
 * [VSC](https://code.visualstudio.com/) - Programa de programación
 * [Postman](https://www.postman.com/) - Programa prueba enrutamiento
+* [Trello](https://trello.com/b/CDQpcl2b/vida) - Programa de gestión de tareas
 * [MySQLDriver](https://dev.mysql.com/downloads/connector/j/) - Programa de gestión de datos
 * [JS](https://developer.mozilla.org/es/docs/Web/JavaScript) - Lenguaje de Programación
 ## Autor
